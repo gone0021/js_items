@@ -10,15 +10,19 @@ class Itemutil
   {
     $itemModel = new ItemModel();
     if (isset($_POST['_post'])) {
+      $data = array(
+        'id' => $_POST['id'],
+        'title' => $_POST['title'],
+        'start' => $_POST['start'],
+        'end' => $_POST['end'],
+        'start_time' => $_POST['start_time'],
+        'end_time' => $_POST['end_time'],
+        'tag' => $_POST['tag'],
+        'memo' => $_POST['memo'],
+      );
+
       // insert
       if ($_POST['_post'] == 'new') {
-        $data = array(
-          'title' => $_POST['title'],
-          'start' => $_POST['start'],
-          'end' => $_POST['end'],
-          'tag' => $_POST['tag'],
-          'memo' => $_POST['memo'],
-        );
         try {
           $itemModel->insert($data);
           header('Location: ./');
@@ -28,13 +32,6 @@ class Itemutil
         }
         // update
       } elseif ($_POST['_post'] == 'edit') {
-        $data = array(
-          'title' => $_POST['title'],
-          'start' => $_POST['start'],
-          'end' => $_POST['end'],
-          'tag' => $_POST['tag'],
-          'memo' => $_POST['memo'],
-        );
         try {
           $itemModel->update($data);
           header('Location: ./');

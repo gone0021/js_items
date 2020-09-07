@@ -9,6 +9,7 @@ header('Content-Type: application/json');
 $itemModel = new ItemModel();
 
 $id = $_POST['id'];
+// $id = $_GET['id'];
 
 try {
   // idによる検索

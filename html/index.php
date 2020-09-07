@@ -22,20 +22,15 @@ try {
 $itemUtil = new Itemutil();
 $itemUtil->database();
 
-
-$dateTime = new DateTime("Asia/Tokyo");
-$date = $dateTime->format("Y-m-d");
-$now = $dateTime->format("Y-m-d\TH:i");
-
 $tags = ['趣味', '付き合い', '仕事'];
 
 $th_title = ['タイトル', '開始日', '終了日', 'タグ', 'メモ', '編集',];
 
 foreach ($items as $k)
-$id = $k['id'];
+  $id = $k['id'];
 var_dump($id);
 
-
+if (isset($_POST['end'])) var_dump($_POST['end']);
 
 ?>
 <!DOCTYPE html>
@@ -51,6 +46,13 @@ var_dump($id);
     <button type="button" class="m-2" id="btNew">新規登録</button>
     <button type="button" class="m-2" id="btAdd">+</button>
     <button type="button" class="" id="btCancelAll">キャンセル</button>
+
+    <p class="mEnd">
+
+      <?php
+      if (isset($_POST['end'])) var_dump($_POST['end']);
+      ?>
+    </p>
 
     <!-- <div id="new"> -->
     <form action="./index.php" method="post" id="new">
@@ -73,8 +75,14 @@ var_dump($id);
         <?php foreach ($items as $k => $v) : ?>
           <tr class="">
             <td id="title<?= $k ?>"><?= $v['title'] ?></td>
-            <td id="start"><?= date('y/m/d', strtotime($v['start'])) ?></td>
-            <td id="end"><?= date('y/m/d', strtotime($v['end'])) ?></td>
+            <td>
+              <div id="start"> <?= date('y/m/d', strtotime($v['start'])) ?> </div>
+              <div id="startTime"> <?= date('H:i', strtotime($v['start_time'])) ?> </div>
+            </td>
+            <td>              
+              <div id="end"><?= date('y/m/d', strtotime($v['end'])) ?></div>
+              <div id="endTime"><?= date('H:i', strtotime($v['end_time'])) ?>
+            </td>
             <td id="tag">
               <?php foreach ($tags as $tag => $t) {
                 if ($v['tag'] == $tag) echo $t;
@@ -83,13 +91,13 @@ var_dump($id);
             <td id="memo"><?= $v['memo'] ?></td>
             <td id="send">
               <!-- edit:test -->
-              <form action="_edit.php" method="POST" class="">
+              <!-- <form action="_edit.php" method="POST" class="">
                 <input type="text" name="id" value="<?= $v['id'] ?>">
                 <input type="submit" value="edit" class="">
-              </form>
+              </form> -->
 
               <!-- bt-edit & submit-delete -->
-              <form action="index.php" method="POST" class="inpId">
+              <form action="index.php" method="POST" class="">
                 <input type="text" name="id" class="inpId" value="<?= $v['id'] ?>">
 
                 <button type="button" name="edit" value="<?= $v['id'] ?>" class="mr-2 btEdit">編集</button>

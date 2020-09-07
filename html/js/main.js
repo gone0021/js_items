@@ -1,6 +1,8 @@
 let title = '<input type="text" name="title" class="mr-2" required placeholder="title">';
-let start = '<input type="datetime-local" name="start" class="mr-2" required>';
-let end = '<input type="datetime-local" name="end" class="mr-2" required>';
+let start = '<input type="date" name="start" class="mr-2" required>';
+let end = '<input type="date" name="end" class="mr-2" required>';
+let startTime = '<input type="time" name="startTime" class="mr-2" required>';
+let endTime = '<input type="time" name="endTime" class="mr-2" required>';
 let tag = '<select name="tag" id="" class="mr-2">' +
   '<option value="0">趣味</option>' +
   '<option value="1">付き合い</option>' +
@@ -11,7 +13,7 @@ let bt_del = '<button type="button" class="btCancel" >削除</button>';
 let bt_new = '<input type="submit" name="_post" value="new" class="mb-2 add">';
 let bt_edit = '<button type="button" value="編集">';
 
-let inp_new = '<div class="mb-2 add">' + title + start + end + tag + bt_del + '</div>';
+let inp_new = '<div class="mb-2 add">' + title + start + startTime + end + endTime + tag + bt_del + '</div>';
 
 let new_flag = false;
 let modal_flag = false;
@@ -21,19 +23,23 @@ $(function () {
   $("#btNew").click(function () {
     $("#glayLayer").show();
     $("#modal").show();
-    $("#mForm").append('<input type="submit" name="_post" value="new" id="mNew">');
+    $("#mForm").append('<input type="submit" name="_post" value="new" id="mbtNew">');
   });
 
   // 編集ボタン
   $(".btEdit").click(function () {
+    // idの取得
+    let mEditVal = $(this).val();
+
     // モーダル
     $("#glayLayer").show();
     $("#modal").css("display", "block"); //show()と同じ
-    $("#mForm").append('<input type="submit" name="_post" value="edit" id="mEdit">');
+    $("#mForm").prepend('<input type="text" name="id" value="' + mEditVal + '" id="mId">');
+    $("#mForm").append('<input type="submit" name="_post" value="edit" id="mbtEdit">');
 
     // 確認用
     // let val = $(this).val();
-    // $("#mForm").append(val);
+    // $("#mForm").append(mEditVal);
 
     // 非同期post
     $.ajax({
@@ -47,6 +53,8 @@ $(function () {
         $('#mTitle').val(data.title);
         $('#mStart').val(data.start);
         $('#mEnd').val(data.end);
+        $('#mStartTime').val(data.start_time);
+        $('#mEndTime').val(data.end_time);
         $('#mTag').val(data.tag);
         $('#mMemo').val(data.memo);
       },
@@ -61,8 +69,17 @@ $(function () {
   $("#glayLayer").click(function () {
     $(this).hide()
     $("#modal").hide();
-    $("#mNew").remove();
-    $("#mEdit").remove();
+    $("#mbtNew").remove();
+    $("#mbtEdit").remove();
+    $("#mId").remove();
+
+    $('#mTitle').val("");
+    $('#mStart').val("");
+    $('#mEnd').val("");
+    $('#mStartTime').val("");
+    $('#mEndTime').val("");
+    $('#mTag').val(0);
+    $('#mMemo').val("");
   });
 
   // 削除アラート

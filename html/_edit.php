@@ -50,8 +50,17 @@ var_dump($_POST['id']);
       <tbody>
         <tr class="">
           <td id="title"><?= $ret['title'] ?></td>
-          <td id="start"><?= date('y/m/d', strtotime($ret['start'])) ?></td>
-          <td id="end"><?= date('y/m/d', strtotime($ret['end'])) ?></td>
+          
+          <td>
+            <div id="sTime"><?= date('H:i', strtotime($ret['start_time'])) ?></div>
+            <div id="start"><?= date('y/m/d', strtotime($ret['start'])) ?></div>
+          </td>
+
+          <td>
+            <div id="end"><?= date('Y-m-d', strtotime($ret['end'])) ?></div>
+            <div id="sTime"><?= date('H:i', strtotime($ret['end_time'])) ?></div>
+          </td>
+
           <td id="tag"><?= $ret['tag'] ?></td>
           <td id="memo"><?= $ret['memo'] ?></td>
         </tr>

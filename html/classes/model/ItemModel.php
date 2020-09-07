@@ -28,14 +28,12 @@ class ItemModel extends BaseModel
     if (!isset($id)) {
       return false;
     }
-
     // $idが数字でなかったらfalse
-    if (!is_numeric($id)) {
+    elseif (!is_numeric($id)) {
       return false;
     }
-
-    // $idが0以下はありえない
-    if ($id <= 0) {
+    // $idが0以下はfalse
+    elseif ($id <= 0) {
       return false;
     }
   }
@@ -50,6 +48,8 @@ class ItemModel extends BaseModel
     $sql .= 'title, ';
     $sql .= 'start, ';
     $sql .= 'end, ';
+    $sql .= 'start_time, ';
+    $sql .= 'end_time, ';
     $sql .= 'tag, ';
     $sql .= 'memo ';
     $sql .= 'FROM items ';
@@ -78,6 +78,8 @@ class ItemModel extends BaseModel
     $sql .= 'title, ';
     $sql .= 'start, ';
     $sql .= 'end, ';
+    $sql .= 'start_time, ';
+    $sql .= 'end_time, ';
     $sql .= 'tag, ';
     $sql .= 'memo ';
     $sql .= 'FROM items ';
@@ -101,17 +103,20 @@ class ItemModel extends BaseModel
   public function insert($data): bool
   {
     // テーブルの構造でデフォルト値が設定されているカラムをinsert文で指定する必要はありません（特に理由がない限り）。
-    $sql = '';
-    $sql .= 'INSERT into items (';
+    $sql = 'INSERT into items (';
     $sql .= 'title, ';
     $sql .= 'start, ';
     $sql .= 'end, ';
+    $sql .= 'start_time, ';
+    $sql .= 'end_time, ';
     $sql .= 'tag, ';
     $sql .= 'memo ';
     $sql .= ') values (';
     $sql .= ':title,';
     $sql .= ':start,';
     $sql .= ':end,';
+    $sql .= ':start_time, ';
+    $sql .= ':end_time, ';
     $sql .= ':tag,';
     $sql .= ':memo';
     $sql .= ')';
@@ -120,6 +125,8 @@ class ItemModel extends BaseModel
     $stmt->bindParam(':title', $data['title'], PDO::PARAM_STR);
     $stmt->bindParam(':start', $data['start'], PDO::PARAM_STR);
     $stmt->bindParam(':end', $data['end'], PDO::PARAM_STR);
+    $stmt->bindParam(':start_time', $data['start_time'], PDO::PARAM_STR);
+    $stmt->bindParam(':end_time', $data['end_time'], PDO::PARAM_STR);
     $stmt->bindParam(':tag', $data['tag'], PDO::PARAM_INT);
     $stmt->bindParam(':memo', $data['memo'], PDO::PARAM_STR);
     $ret = $stmt->execute();
@@ -136,20 +143,25 @@ class ItemModel extends BaseModel
   {
     $this->checkId($data['id']);
 
-    $sql = '';
-    $sql .= 'UPDATE items set ';
+    $sql = 'UPDATE items set ';
     $sql .= 'id =:id,';
+    $sql .= 'title =:title, ';
     $sql .= 'start =:start,';
     $sql .= 'end =:end,';
+    $sql .= 'start_time =:start_time, ';
+    $sql .= 'end_time =:end_time, ';
     $sql .= 'tag =:tag,';
     $sql .= 'memo =:memo,';
     $sql .= 'updated_at = current_timestamp()';
-    $sql .= 'where id =:id';
+    $sql .= 'WHERE id = :id';
 
     $stmt = $this->dbh->prepare($sql);
     $stmt->bindParam(':id', $data['id'], PDO::PARAM_INT);
+    $stmt->bindParam(':title', $data['title'], PDO::PARAM_STR);
     $stmt->bindParam(':start', $data['start'], PDO::PARAM_STR);
     $stmt->bindParam(':end', $data['end'], PDO::PARAM_STR);
+    $stmt->bindParam(':start_time', $data['start_time'], PDO::PARAM_STR);
+    $stmt->bindParam(':end_time', $data['end_time'], PDO::PARAM_STR);
     $stmt->bindParam(':tag', $data['tag'], PDO::PARAM_INT);
     $stmt->bindParam(':memo', $data['memo'], PDO::PARAM_STR);
     $ret = $stmt->execute();
@@ -165,11 +177,10 @@ class ItemModel extends BaseModel
   public function delete($id): bool
   {
     $this->checkId($id);
-
-    $sql = '';
-    $sql .= 'UPDATE items set ';
+    
+    $sql = 'UPDATE items set ';
     $sql .= 'deleted_at = current_timestamp()';
-    $sql .= 'where id =:id'; // where
+    $sql .= 'WHERE id =:id'; // where
 
     $stmt = $this->dbh->prepare($sql);
     $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -186,8 +197,6 @@ class ItemModel extends BaseModel
     $ret = $this->dbh->lastInsertId();
     return $ret;
   }
-
-
 
   /**
    * 項目を検索
