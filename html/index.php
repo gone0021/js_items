@@ -1,6 +1,6 @@
 <?php
 $root = $_SERVER['DOCUMENT_ROOT'];
-$root .= "/data/js_items/html";
+$root .= "/data/js_items_1.02/html";
 require_once($root . "/classes/util/SessionUtil.php");
 require_once($root . "/classes/util/ItemUtil.php");
 require_once($root . "/classes/model/ItemModel.php");
@@ -28,7 +28,7 @@ $th_title = ['タイトル', '開始日', '終了日', 'タグ', 'メモ', '編�
 
 foreach ($items as $k)
   $id = $k['id'];
-var_dump($id);
+// var_dump($id);
 
 if (isset($_POST['end'])) var_dump($_POST['end']);
 
@@ -47,16 +47,8 @@ if (isset($_POST['end'])) var_dump($_POST['end']);
     <button type="button" class="m-2" id="btAdd">+</button>
     <button type="button" class="" id="btCancelAll">キャンセル</button>
 
-    <p class="mEnd">
-
-      <?php
-      if (isset($_POST['end'])) var_dump($_POST['end']);
-      ?>
-    </p>
-
     <!-- <div id="new"> -->
     <form action="./index.php" method="post" id="new">
-      <input type="hidden" name="post" value="_new" id="">
     </form>
 
     <table class="table">
@@ -98,7 +90,7 @@ if (isset($_POST['end'])) var_dump($_POST['end']);
 
               <!-- bt-edit & submit-delete -->
               <form action="index.php" method="POST" class="">
-                <input type="text" name="id" class="inpId" value="<?= $v['id'] ?>">
+                <input type="hidden" name="id" class="inpId" value="<?= $v['id'] ?>">
 
                 <button type="button" name="edit" value="<?= $v['id'] ?>" class="mr-2 btEdit">編集</button>
 

@@ -1,6 +1,6 @@
 <?php
 $root = $_SERVER['DOCUMENT_ROOT'];
-$root .= '/data/js_items/html';
+$root .= '/data/js_items_1.02/html';
 require_once($root . '/classes/model/BaseModel.php');
 
 /**
